@@ -1310,7 +1310,7 @@ var _GLTFLoader = ( function () {
 	 */
 	function assignExtrasToUserData( object, gltfDef ) {
 
-		if ( gltfDef.extras !== undefined ) {
+		if ( gltfDef && gltfDef.extras !== undefined ) {
 
 			if ( typeof gltfDef.extras === 'object' ) {
 
@@ -3140,11 +3140,11 @@ var _GLTFLoader = ( function () {
 		return ( function () {
 
 			// .isBone isn't in glTF spec. See .markDefs
-			if ( nodeDef.isBone === true ) {
+			if ( nodeDef && nodeDef.isBone === true ) {
 
 				return Promise.resolve( new THREE.Bone() );
 
-			} else if ( nodeDef.mesh !== undefined ) {
+			} else if ( nodeDef && nodeDef.mesh !== undefined ) {
 
 				return parser.getDependency( 'mesh', nodeDef.mesh ).then( function ( mesh ) {
 
@@ -3194,7 +3194,7 @@ var _GLTFLoader = ( function () {
 
 				} );
 
-			} else if ( nodeDef.camera !== undefined ) {
+			} else if ( nodeDef && nodeDef.camera !== undefined ) {
 
 				return parser.getDependency( 'camera', nodeDef.camera );
 
@@ -3212,7 +3212,7 @@ var _GLTFLoader = ( function () {
 
 		}() ).then( function ( node ) {
 
-			if ( nodeDef.name !== undefined ) {
+			if ( nodeDef && nodeDef.name !== undefined ) {
 
 				node.name = THREE.PropertyBinding.sanitizeNodeName( nodeDef.name );
 
@@ -3220,9 +3220,9 @@ var _GLTFLoader = ( function () {
 
 			assignExtrasToUserData( node, nodeDef );
 
-			if ( nodeDef.extensions ) addUnknownExtensionsToUserData( extensions, node, nodeDef );
+			if ( nodeDef && nodeDef.extensions ) addUnknownExtensionsToUserData( extensions, node, nodeDef );
 
-			if ( nodeDef.matrix !== undefined ) {
+			if ( nodeDef && nodeDef.matrix !== undefined ) {
 
 				var matrix = new THREE.Matrix4();
 				matrix.fromArray( nodeDef.matrix );
@@ -3230,19 +3230,19 @@ var _GLTFLoader = ( function () {
 
 			} else {
 
-				if ( nodeDef.translation !== undefined ) {
+				if ( nodeDef && nodeDef.translation !== undefined ) {
 
 					node.position.fromArray( nodeDef.translation );
 
 				}
 
-				if ( nodeDef.rotation !== undefined ) {
+				if ( nodeDef && nodeDef.rotation !== undefined ) {
 
 					node.quaternion.fromArray( nodeDef.rotation );
 
 				}
 
-				if ( nodeDef.scale !== undefined ) {
+				if ( nodeDef && nodeDef.scale !== undefined ) {
 
 					node.scale.fromArray( nodeDef.scale );
 
